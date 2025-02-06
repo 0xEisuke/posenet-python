@@ -1,6 +1,7 @@
 import json
 import struct
 import tensorflow as tf
+tf.compat.v1.disable_eager_execution()  # TensorFlow 2.x の Eager Execution を無効化
 from tensorflow.python.tools.freeze_graph import freeze_graph
 import cv2
 import numpy as np
@@ -161,8 +162,7 @@ def convert(model_id, model_dir, check=False):
     with cg.as_default():
         layers = to_output_strided_layers(mobile_net_arch, output_stride)
         variables = load_variables(chkpoint)
-
-        init = tf.global_variables_initializer()
+        init = tf.compat.v1.global_variables_initializer()
         with tf.Session() as sess:
             sess.run(init)
             saver = tf.train.Saver()
